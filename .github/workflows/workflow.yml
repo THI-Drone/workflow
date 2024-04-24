@@ -37,8 +37,6 @@ jobs:
         docker pull $IMAGE
         NEW_ID=$(docker inspect --format "{{.Id}}" $IMAGE)
         INSTALL_DEPENDENCIES=false
-
-        docker restart $CONTAINER_NAME
         
         if [ "$OLD_ID" != "$NEW_ID" ]; then
           echo "update container"
@@ -62,8 +60,8 @@ jobs:
                 docker start $CONTAINER_NAME
                 docker exec -i $CONTAINER_NAME /bin/bash -c "rm -rf /thi-drone-ws/"
             else
-                echo "container is already started"
-                echo "Container $CONTAINER_NAME is already running."
+                echo "restart container"
+                docker restart $CONTAINER_NAME
                 docker exec -i $CONTAINER_NAME /bin/bash -c "rm -rf /thi-drone-ws/"
             fi
           fi
