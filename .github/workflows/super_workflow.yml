@@ -102,7 +102,7 @@ jobs:
         rm -rf ./coverage_html
         rm -rf ./htmlcov_paths.txt
         
-        docker exec -i ros-container /bin/bash -c "cd /thi-drone-ws && git submodule foreach --recursive \"if [ -d ./htmlcov ]; then echo /thi-drone-ws/\$sm_path/htmlcov >> /thi-drone-ws/htmlcov_paths.txt; fi\""
+        docker exec -i ros-container /bin/bash -c "cd /thi-drone-ws && git submodule foreach --recursive \"if [ -d ./htmlcov ]; then echo /thi-drone-ws/\\\$sm_path/htmlcov >> /thi-drone-ws/htmlcov_paths.txt; fi\""
         
         docker cp ros-container:/thi-drone-ws/htmlcov_paths.txt ./htmlcov_paths.txt
 
