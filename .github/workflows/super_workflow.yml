@@ -101,18 +101,20 @@ jobs:
       run: |
         REPONAME=$(basename ${{github.repository}})
         rm -rf ./coverage_html
+        
+        docker exec -i ros-container /bin/bash -c "cd /thi-drone-ws && \
+            git submodule foreach --recursive ' \
+                if [ -d ./htmlcov ]; then \
+                    echo /thi-drone-ws/$name/htmlcov >> /thi-drone-ws/htmlcov_paths.txt; \
+                fi'" 
+        docker cp ros-container:/thi-drone-ws/htmlcov_paths.txt ./htmlcov_paths.txt
 
+        while read p; do name=$(basename $(dirname $p))
+            docker cp ros-container:$p ./coverage_html/$name
+        done < htmlcov_paths.txt
 
-        docker exec -i ros-container /bin/bash -c "cd /thi-drone-ws \
-        git submodule foreach --recursive '
-            htmlcov_exists=\$(test -d ./\$name/htmlcov && echo yes || echo no)
-            if [ "\$htmlcov_exists" == "yes" ]; then \
-                docker cp ros-container:/thi-drone-ws/src/\$name/htmlcov ./coverage_html/\$name; \
-            fi'
-        lcov_exists=\$(test -d ./lcov && echo yes || echo no)
-        if [ "\$lcov_exists" == "yes" ]; then \
-            docker cp ros-container:/thi-drone-ws/lcov ./coverage_html/lcov; \
-        fi"
+        lcov_exists=$(docker exec ros-container test -d /thi-drone-ws/lcov && echo yes || echo no)
+        if [ "$lcov_exists" == "yes" ]; then docker cp ros-container:/thi-drone-ws/lcov ./coverage_html/lcov; fi"
         
     - name: PR comment
       uses: thollander/actions-comment-pull-request@v2
