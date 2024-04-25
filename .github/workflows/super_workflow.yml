@@ -99,7 +99,6 @@ jobs:
     - name: Copy coverage report from container to workspace
       id: copy-coverage
       run: |
-        REPONAME=$(basename ${{github.repository}})
         rm -rf ./coverage_html
         rm -rf ./htmlcov_paths.txt
         
