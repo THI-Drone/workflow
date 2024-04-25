@@ -112,7 +112,8 @@ jobs:
             docker cp ros-container:"$p" "./coverage_html/$sub_name"
         done < htmlcov_paths.txt
 
-
+        lcov_exists=$(docker exec ros-container test -d /thi-drone-ws/lcov && echo yes || echo no)
+        
     - name: PR comment
       uses: thollander/actions-comment-pull-request@v2
       with:
