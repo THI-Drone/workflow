@@ -103,9 +103,9 @@ jobs:
         rm -rf ./htmlcov_paths.txt
         
         docker exec -i ros-container /bin/bash -c "cd /thi-drone-ws && \
-            git submodule foreach --recursive ' \
-                if [ -d ./htmlcov ]; then \
-                    echo /thi-drone-ws/\$sm_path/htmlcov >> /thi-drone-ws/htmlcov_paths.txt; \
+            git submodule foreach --recursive '
+                if [ -d ./htmlcov ]; then
+                    echo /thi-drone-ws/\$sm_path/htmlcov >> /thi-drone-ws/htmlcov_paths.txt
                 fi'" 
         docker cp ros-container:/thi-drone-ws/htmlcov_paths.txt ./htmlcov_paths.txt
 
@@ -115,8 +115,7 @@ jobs:
         done < htmlcov_paths.txt
 
         lcov_exists=$(docker exec ros-container test -d /thi-drone-ws/lcov && echo yes || echo no)
-        mkdir -p ./coverage_html/lcov
-        if [ "$lcov_exists" == "yes" ]; then docker cp ros-container:/thi-drone-ws/lcov ./coverage_html/lcov; fi"
+        if [ "$lcov_exists" == "yes" ]; then mkdir -p ./coverage_html/lcov; docker cp ros-container:/thi-drone-ws/lcov ./coverage_html/lcov; fi"
         
     - name: PR comment
       uses: thollander/actions-comment-pull-request@v2
