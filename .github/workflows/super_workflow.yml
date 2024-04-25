@@ -105,13 +105,13 @@ jobs:
         docker exec -i ros-container /bin/bash -c "cd /thi-drone-ws && \
             git submodule foreach --recursive ' \
                 if [ -d ./htmlcov ]; then \
-                    echo /thi-drone-ws/\$name/htmlcov >> /thi-drone-ws/htmlcov_paths.txt; \
+                    echo /thi-drone-ws/\$sm_path/htmlcov >> /thi-drone-ws/htmlcov_paths.txt; \
                 fi'" 
         docker cp ros-container:/thi-drone-ws/htmlcov_paths.txt ./htmlcov_paths.txt
 
-        while read p; do name=$(basename $(dirname $p))
-            mkdir -p ./coverage_html/$name
-            docker cp ros-container:$p ./coverage_html/$name
+        while read p; do sub_name=$(basename $(dirname $p))
+            mkdir -p ./coverage_html/$sub_name
+            docker cp ros-container:$p ./coverage_html/$sub_name
         done < htmlcov_paths.txt
 
         lcov_exists=$(docker exec ros-container test -d /thi-drone-ws/lcov && echo yes || echo no)
