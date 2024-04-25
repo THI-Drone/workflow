@@ -83,7 +83,7 @@ jobs:
         set +e
         docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash && cd thi-drone-ws/ && colcon lcov-result"
         
-        docker exec -i ros-container /bin/bash -c "cd /thi-drone-ws/src && \
+        docker exec -i ros-container /bin/bash -c "cd /thi-drone-ws && \
             git submodule foreach --recursive ' \
                 if [ -f coverage ]; then \
                     coverage report; \
