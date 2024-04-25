@@ -82,8 +82,7 @@ jobs:
         
         set +e
         docker exec -i ros-container /bin/bash -c "source /opt/ros/humble/setup.bash && cd thi-drone-ws/ && colcon lcov-result"
-        set -e
-
+        
         docker exec -i ros-container /bin/bash -c "cd /thi-drone-ws/src && \
             git submodule foreach --recursive ' \
                 if [ -f coverage ]; then \
@@ -92,7 +91,7 @@ jobs:
             if [ -f total_coverage.info ]; then \
                 lcov --list ./total_coverage.info; \
             fi" > coverage_output
-
+        set -e
 
         awk 'BEGIN{print "<pre>";} {print}' coverage_output > temp.txt && mv temp.txt coverage_output
         echo -e "<pre>" >> coverage_output
