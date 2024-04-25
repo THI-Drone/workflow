@@ -101,6 +101,7 @@ jobs:
       run: |
         REPONAME=$(basename ${{github.repository}})
         rm -rf ./coverage_html
+        mkdir -p ./coverage_html
         
         docker exec -i ros-container /bin/bash -c "cd /thi-drone-ws && \
             git submodule foreach --recursive ' \
