@@ -44,7 +44,7 @@ jobs:
           docker run --name $CONTAINER_NAME -i -d $IMAGE bash
           INSTALL_DEPENDENCIES=true
         else
-          echo "use old image"
+          echo "using current image, as it is up to date"
           CONTAINER_ID=$(docker ps -a -q --filter name="^/${CONTAINER_NAME}$")
 
           if [ -z "$CONTAINER_ID" ]; then
